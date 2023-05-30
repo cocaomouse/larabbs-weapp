@@ -1,0 +1,45 @@
+<template>
+<div class="page">
+  <div class="page__bd">
+    <div class="weui-panel weui-panel_access">
+      <div class="weui-panel__hd" v-if="isLoggedIn">
+        已登录 name: {{ user.name }}
+       <button type="warn" v-on:click="logout">退出登录</button>
+      </div>
+      <div v-else>
+        <a class="weui-cell weui-cell_access" url="/pages/auth/login">
+          <div class="weui-cell__bd">未登录</div>
+          <div class="weui-cell_access weui-cell__ft"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+<config>
+  {
+    navigationBarTitleText: '我的',
+  }
+</config>
+
+<script>
+  import wepy from '@wepy/core'
+  import store from '@/store' // @是scr目录的别名,使用@更方便,并且不会因为文件位置变动而调整代码.
+  import { mapGetters } from '@wepy/x'
+
+  wepy.page({
+    store,
+    // 通过mapGetters可以直接使用Vuex中定义的isLoggedIn
+    computed: {
+      ...mapGetters(['user','isLoggedIn'])
+    },
+    methods: {
+      // 退出
+      async logout() {      
+        try {
+          await this.$store.dispatch('logout')
+        } catch(err) {}
+      }
+    }
+  })
+</script>
