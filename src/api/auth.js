@@ -27,3 +27,13 @@ export function logout(token) {
 	   }
 	})
 }
+
+/* 获取验证码 */
+export function getCaptcha(phone) {
+  return request('captchas', {
+    method: 'post',
+    data: {
+      phone: phone
+    }
+  })
+}
