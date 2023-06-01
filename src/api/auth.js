@@ -48,3 +48,11 @@ export function getVerificationCode(key, code) {
     }
   })
 }
+
+/* 用户注册 */
+export function register(data) {
+  return request('weapp/users',{
+    method: 'post',
+    data: data
+  })
+}
