@@ -79,7 +79,47 @@ const authRequest = async (url, options = {}, showLoading = true) => {
 	return await request(url, options, showLoading)
 }
 
+// 上传文件
+const uploadFile = async (url, options = {}, showLoading = true) => {
+  // 显示加载中
+  if (showLoading) {
+    wx.showLoading({title: '上传中'})
+  }
+  // 拼接请求地址
+  options.url = host + url
+  checkToken()
+  // 携带Authorization头 进行身份验证
+  options.header = {
+    Authorization: 'Bearer ' + store.getters.accessToken
+  }
+  // 调用uploadFile接口
+  let response = await wepy.wx.uploadFile(options)
+
+  if (showLoading) {
+    wx.hideLoading()
+  }
+  if (response.statusCode >= 200 && response.statusCode < 300) {
+    return response
+  }
+
+  wx.showModal({
+    title: '提示',
+    content: '服务器错误，请联系管理员或重试'
+  })
+
+  // 通过使用 Error 的实例获取错误原因 reason 对调试和选择性错误捕捉很有帮助。
+  const error = new Error(response.data.message)
+  error.response = response
+  /*
+   * Promise对象用于表示一个异步操作的最终完成（或失败）及其结果集
+   * 静态函数 Promise.reject 返回一个被拒绝的 Promise 对象。
+   * 通过使用 Error 的实例获取错误原因 reason 对调试和选择性错误捕捉很有帮助。
+   */
+  return Promise.reject(error)
+}
+
 export {
 	request,
 	authRequest,
+  uploadFile
 }
