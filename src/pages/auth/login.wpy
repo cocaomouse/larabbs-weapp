@@ -102,7 +102,7 @@
           	  this.$set(this.errors, data.name, [data.msg])
           	  this.errorMessage = data.msg
           	}
-          })  	
+          })
 	  	},
 	  	// 表单提交
 	  	async submit() {
