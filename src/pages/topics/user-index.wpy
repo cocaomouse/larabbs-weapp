@@ -28,20 +28,23 @@ wepy.page({
     // 用户 id
     userId: 0
   },
+  /*
+   * onLoad(Object query) 页面加载时触发。
+   * 一个页面只会调用一次，
+   * 可以在onLoad的参数重获取打开当前页面路径中的参数
+   * 属于小程序生命周期回调函数
+   */
   async onLoad(options) {
-    console.log(11)
     this.userId = options.id
     this.loadTopics()
   },
   async onPullDownRefresh() {
-    console.log(22)
     this.page = 1
     this.noMoreData = false
     await this.loadTopics(true)
     wx.stopPullDownRefresh()
   },
   async onReachBottom() {
-    console.log(33)
     // 如果没有更多内容,直接返回
     if (this.noMoreData || this.isLoading) {
       return
@@ -53,7 +56,6 @@ wepy.page({
   },
   methods: {
     async loadTopics(reset = false) {
-      console.log(44)
       // 请求话题列表
       const topicsResponse = await getUserTopics(this.userId, {
         page: this.page,
