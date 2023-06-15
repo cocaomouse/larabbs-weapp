@@ -92,6 +92,7 @@
   import wepy from '@wepy/core'
   import { getTopics, getCategories } from '@/api/topic'
   import listRefresh from '@/mixins/list-refresh'
+  import eventHub from '@/common/eventHub'
 
   wepy.page({
     mixins: [
@@ -119,6 +120,11 @@
       //this.loadTopics()
       this.loadCategories()
       this.loadData()
+      eventHub.$on('topic-deleted',(topic)=>{
+        this.page = 1
+        this.noMoreData = false
+        this.loadData(true)
+      })
     },
     methods: {
       categorisToggle() {
@@ -149,7 +155,7 @@
       // reset,是否重置数据,
       // 为true,则替换现有数据,
       // 为false,则在当前数据下面添加新的数据
-      async loadTopics(reset = false) {
+      /* async loadTopics(reset = false) {
         let params = {
           page: this.page,
           include: 'user,category'
@@ -167,7 +173,7 @@
         if (pagination.current_page === pagination.last_page) {
           this.noMoreData = true
         }
-      },
+      }, */
       async loadCategories() {
         // 从缓存中获取分类数据
         let categories = wx.getStorageSync('categories')

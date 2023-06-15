@@ -1,4 +1,4 @@
-import { request } from "@/utils/request";
+import { request, authRequest } from "@/utils/request";
 
 // 话题列表页
 export function getTopics(data) {
@@ -21,6 +21,14 @@ export function getTopic(id, data) {
 // 某个用户的话题列表
 export function getUserTopics(userId, data) {
   return request('users/'+userId+'/topics',{
+    data: data
+  })
+}
+
+// 用户删除自己发布的话题
+export function deleteTopic(id, data) {
+  return authRequest('topics/' + id, {
+    method: 'DELETE',
     data: data
   })
 }
