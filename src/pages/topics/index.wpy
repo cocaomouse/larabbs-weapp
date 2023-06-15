@@ -74,7 +74,7 @@
           </div>
         </div>
       </div>
-      <topic-list :topics="topics" :no-more-data="noMoreData"></topic-list>
+      <topic-list :topics="resourceData" :no-more-data="noMoreData"></topic-list>
     </div>
   </div>
 </template>
@@ -91,23 +91,19 @@
 <script>
   import wepy from '@wepy/core'
   import { getTopics, getCategories } from '@/api/topic'
+  import listRefresh from '@/mixins/list-refresh'
 
   wepy.page({
+    mixins: [
+      listRefresh
+    ],
     data: {
-      // 话题数据
-      topics: [],
       // 分类数据
       categories: [],
       // 设置当前的分类
       currentCategory: {},
       // 控制是否显示分类
       categoryOpen: false,
-      // 当前分页
-      page: 1,
-      // 是否还有更多数据
-      noMoreData: false,
-      // 是否在加载中
-      isLoading: false
     },
     /* 计算属性 currentCategoryId 和 currentCategoryName */
     computed: {
@@ -120,33 +116,35 @@
     },
     // onLoad()方法中,loadTopics()方法只会触发一次
     async onLoad() {
-      this.loadTopics()
+      //this.loadTopics()
       this.loadCategories()
-    },
-    // 因为下拉刷新其实是重置话题数据，
-    // 所以调用时使用 this.loadTopics(true)，
-    // 覆盖当前的 topics 数据，
-    // 最后调用 stopPullDownRefresh 停止刷新。
-    async onPullDownRefresh() {
-      this.page = 1
-      this.noMoreData = false
-      await this.loadTopics(true)
-      wx.stopPullDownRefresh()
-    },
-    // 页面滚动到底部时触发
-    // 如果 noMoreData 为 true 则直接返回，
-    // 否则将页数 page 加 1，然后获取下一页的话题数据；
-    async onReachBottom() {
-      // 如果没有更多内容，直接返回
-      if (this.noMoreData || this.isLoading) {
-        return
-      }
-      this.isLoading = true
-      this.page += 1
-      await this.loadTopics()
-      this.isLoading = false
+      this.loadData()
     },
     methods: {
+      categorisToggle() {
+        this.categoryOpen = !this.categoryOpen
+      },
+      async fetchData() {
+        let params = {
+          page: this.page,
+          include: 'user,category'
+        }
+
+        if (this.currentCategoryId) {
+          params['filter[category_id]'] = this.currentCategoryId
+        }
+
+        // 请求话题列表接口
+        return getTopics(params)
+      },
+      // 设置当前的分类
+      async changeCategory(category = {}) {
+        this.currentCategory = category
+        this.categoryOpen = false
+        this.page = 1
+        // 设置reset为true
+        this.loadData(true)
+      },
       // 获取话题数据
       // reset,是否重置数据,
       // 为true,则替换现有数据,
@@ -183,15 +181,7 @@
       },
       categorisToggle() {
         this.categoryOpen = !this.categoryOpen
-      },
-      // 设置当前的分类
-      async changeCategory(category = {}) {
-        this.currentCategory = category
-        this.categoryOpen = false
-        this.page = 1
-        // 设置reset为true
-        this.loadTopics(true)
-      },
+      }
     }
   })
 </script>
