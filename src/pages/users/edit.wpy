@@ -178,10 +178,8 @@ wepy.page({
         let avatar = image.tempFiles[0].tempFilePath
         // 调用上传图片接口
         let imageResponse = await updateAvatar(avatar)
-        console.log(imageResponse)
         // 小程序上传结果没有做 JSON.parse，需要手动处理(将接受的字符串转换为JS对象)
         let responseData = JSON.parse(imageResponse.data)
-        console.log(responseData)
         this.form = Object.assign(
           {},
           // 上传成功后更新 form 属性的 avatar_image_id 和 avatar

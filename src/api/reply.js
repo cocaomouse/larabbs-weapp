@@ -13,3 +13,11 @@ export function getUserReplies(userId, data) {
     data: data
   })
 }
+
+/* 添加回复 */
+export function createReply(topicId, data) {
+  return authRequest('topics/'+ topicId +'/replies', {
+    method: 'POST',
+    data: data
+  })
+}
