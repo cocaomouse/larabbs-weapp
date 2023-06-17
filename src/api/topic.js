@@ -32,3 +32,4 @@ export function deleteTopic(id, data) {
     data: data
   })
 }
+
