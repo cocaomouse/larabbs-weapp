@@ -18,8 +18,12 @@
           </a>
           <div class="weui-media-box__bd weui-media-box__bd_in-appmsg">
             <div class="weui-media-box__title">{{ reply.user.name }}</div>
-            <div class="weui-media-box__desc"><rich-text nodes="{{ reply.content }}" bindtap="tap"></rich-text></div>
-            <div class="weui-media-box__desc"><datetime-diff :datetime="reply.created_at"></datetime-diff></div>
+            <div class="weui-media-box__desc">
+              <rich-text nodes="{{ reply.content }}" bindtap="tap"></rich-text>
+            </div>
+            <div class="weui-media-box__desc">
+              <datetime-diff :datetime="reply.created_at"></datetime-diff>
+            </div>
           </div>
         </div>
       </div>

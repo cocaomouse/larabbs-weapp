@@ -15,13 +15,13 @@ const request = async (url, options = {}, showLoading = true) => {
 	// 拼接请求地址
 	options.url = host + url
 
-    /*
-      wx.request 发起网络请求,参数包括
-         url:接口地址,
-         data:请求参数,
-         header:请求的header,
-         method:请求的方法,有效值:OPTIONS,GET,HEAD,POST,PUT,DELETE,TRACE,CONNECT
-    */
+  /*
+    wx.request 发起网络请求,参数包括
+      url:接口地址,
+      data:请求参数,
+      header:请求的header,
+      method:请求的方法,有效值:OPTIONS,GET,HEAD,POST,PUT,DELETE,TRACE,CONNECT
+  */
 	let response = await wepy.wx.request(options)
 
 	if (showLoading) {

@@ -13,7 +13,7 @@ export function refresh(token) {
 	return request('authorizations/current',{
 		method: 'put',
 		header: {
-		  'Authorizations': 'Bearer ' + token
+		  'Authorization': 'Bearer ' + token
 		}
 	})
 }
