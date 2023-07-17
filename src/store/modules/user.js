@@ -46,7 +46,6 @@ const actions = {
 	},
 	async refresh ({ dispatch, commit, state }, params = {}) {
       const refreshResponse = await refresh(state.accessToken, {}, false)
-      console.log(11)
       commit('setToken', refreshResponse.data)
       auth.setToken(refreshResponse.data)
 

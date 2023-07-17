@@ -93,10 +93,16 @@
   import { getTopics, getCategories } from '@/api/topic'
   import listRefresh from '@/mixins/list-refresh'
   import eventHub from '@/common/eventHub'
+  import store from '@/store'
+  import { mapGetters } from '@wepy/x'
+  import syncBadge from '@/mixins/sync-badge'
+
 
   wepy.page({
+    store,
     mixins: [
-      listRefresh
+      listRefresh,
+      syncBadge
     ],
     data: {
       // 分类数据
@@ -108,6 +114,7 @@
     },
     /* 计算属性 currentCategoryId 和 currentCategoryName */
     computed: {
+      ...mapGetters([ 'unreadCount']),
       currentCategoryId() {
         return this.currentCategory.id || null
       },
